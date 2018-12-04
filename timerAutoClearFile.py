@@ -3,12 +3,13 @@
 
 import time;
 import os;
+import shutil
 # raw_input("按下 enter 键退出，其他任意键显示...\n")
 
 list=['build','tmp']# 待删除的文件目录
 print list
 
-targetList=['',''] # 指定的目标目录
+targetList=['/Users/lichong/Documents'] # 指定的目标目录
 print targetList
 
 # ticks=time.localtime(time.time())
@@ -44,3 +45,22 @@ print time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 
 # 给出当前的目录
 print os.getcwd()
+
+# def searchBuildChildFile(dirs,files):
+
+
+def file_name(file_dir):
+    for root,dirs,files in os.walk(file_dir):
+        if root.endswith('/build'):
+            print(file_dir)
+            print(root)
+            print(files)
+        elif '/build' in root:
+            print(root)
+            # shutil.rmtree(path)    #递归删除文件夹
+        else:
+            for dir in dirs:
+                file_name(dir)
+
+for dir in targetList:
+    file_name(dir)
