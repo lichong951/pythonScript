@@ -4,63 +4,47 @@
 import time;
 import os;
 import shutil
-# raw_input("按下 enter 键退出，其他任意键显示...\n")
+# 1、指定清理目录
+# 2、过滤合法文件
+# 3、指定清理时间日期
+# 4、统计清理文件的总计大小
+# 5、统计清理耗时
+# 6、？删除找回功能？
+build='/build/'
+clearDirlist=[build+'generated',build+'outputs',build+'tmp',build+'intermediates'
+            ,build+'arcore-native',build+'sceneform_sdk'
+            ]# 待删除的文件目录
+print clearDirlist
 
-list=['build','tmp']# 待删除的文件目录
-print list
+clearFileList=['.dmg']
+print clearFileList
+
+filterList=['.java','.js','.cpp','.c']
 
 targetList=['/Users/lichong/Documents'] # 指定的目标目录
 print targetList
 
-# ticks=time.localtime(time.time())
-# localtime=time.asctime(ticks)
-# print localtime
-
-# 格式化成2016-03-20 11:45:39形式
-print time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) 
-
-# 打开一个文件
-# fo=open("foo.txt","w")
-# print "文件名: ", fo.name
-# print "是否已关闭 : ", fo.closed
-# print "访问模式 : ", fo.mode
-# print "末尾是否强制加空格 : ", fo.softspace
-
-# fo.write( "www.runoob.com!\nVery good site!\n")
-
-# # 关闭打开的文件
-# fo.close()
-
-# # 打开一个文件
-# fo = open("foo.txt", "r+")
-# str = fo.read(10)
-# print "读取的字符串是 : ", str
-# # 关闭打开的文件
-# fo.close()
-
-# 重命名文件test1.txt到test2.txt。
-# os.rename( "foo.txt", "fo.txt" )
-
-# os.remove("fo.txt")
-
-# 给出当前的目录
-print os.getcwd()
-
-# def searchBuildChildFile(dirs,files):
-
-
 def file_name(file_dir):
     for root,dirs,files in os.walk(file_dir):
-        if root.endswith('/build'):
-            print(file_dir)
-            print(root)
-            print(files)
-        elif '/build' in root:
-            print(root)
-            # shutil.rmtree(path)    #递归删除文件夹
+        for clearFile in clearFileList:
+            for file in files:
+                if os.path.splitext(file)[1]==clearFile:
+                    print(file)
+
+
+        if build in root:
+            # print(root)
+            for clearDir in clearDirlist:
+                if clearDir in root:
+                    print("待删除："+root)
+                    # shutil.rmtree(root)    #递归删除文件夹
+                    print("**已删除："+root)
+                    break
+            continue
         else:
             for dir in dirs:
                 file_name(dir)
+        
 
 for dir in targetList:
     file_name(dir)
