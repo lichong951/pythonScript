@@ -21,7 +21,7 @@ print clearFileList
 
 filterList=['.java','.js','.cpp','.c']
 
-targetList=['/Users/lichong/Documents'] # 指定的目标目录
+targetList=['/Users/smart/Documents','/Users/smart/Downloads'] # 指定的目标目录
 print targetList
 
 def file_name(file_dir):
@@ -29,7 +29,8 @@ def file_name(file_dir):
         for clearFile in clearFileList:
             for file in files:
                 if os.path.splitext(file)[1]==clearFile:
-                    print(file)
+                    print(root+'/'+file)
+                    # os.remove(root+'/'+file)
 
 
         if build in root:
