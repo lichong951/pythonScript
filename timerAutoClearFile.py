@@ -16,7 +16,7 @@ clearDirlist=[build+'generated',build+'outputs',build+'tmp',build+'intermediates
             ]# 待删除的文件目录
 print clearDirlist
 
-clearFileList=['.dmg']
+clearFileList=['.dmg','.zip','.rar']
 print clearFileList
 
 filterList=['.java','.js','.cpp','.c']
