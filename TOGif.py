@@ -15,7 +15,6 @@
 # *.webm 
 # *.wav 
 # *.rmvb 
-
 import moviepy.editor as mpe
 cache = mpe.VideoFileClip("").subclip(0,15)
 cache.write_gif("xxx.gif",fps=2)
