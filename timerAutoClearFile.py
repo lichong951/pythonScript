@@ -21,7 +21,7 @@ print clearFileList
 
 filterList=['.java','.js','.cpp','.c']
 
-targetList=['/Users/smart/Documents','/Users/smart/Downloads'] # 指定的目标目录
+targetList=['/Users/lichong/Documents','/Users/lichong/Downloads'] # 指定的目标目录
 print targetList
 
 def file_name(file_dir):
