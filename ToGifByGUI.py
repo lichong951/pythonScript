@@ -223,15 +223,15 @@ class Example(QMainWindow):
             self.timer.start(100, self)
             self.btn.setText('Stop')
 
-    def changeValue(self, value):
-        if value == 0:
-            self.label.setPixmap(QPixmap('./gif/2022-03-21-17.19.44.gif'))
-        elif value > 0 and value <= 30:
-            self.label.setPixmap(QPixmap('./img/1.jpg'))
-        elif value > 30 and value < 80:
-            self.label.setPixmap(QPixmap('med.ico'))
-        else:
-            self.label.setPixmap(QPixmap('max.ico'))
+    # def changeValue(self, value):
+    #     if value == 0:
+    #         self.label.setPixmap(QPixmap('./gif/2022-03-21-17.19.44.gif'))
+    #     elif value > 0 and value <= 30:
+    #         self.label.setPixmap(QPixmap('./img/1.jpg'))
+    #     elif value > 30 and value < 80:
+    #         self.label.setPixmap(QPixmap('med.ico'))
+    #     else:
+    #         self.label.setPixmap(QPixmap('max.ico'))
     def showDialog(self):
         global fileList
         fileList = QFileDialog.getOpenFileUrl()
