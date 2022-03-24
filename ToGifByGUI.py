@@ -32,9 +32,7 @@ from PyQt5.QtMultimediaWidgets import QVideoWidget
 
 from PyQt5.QtMultimedia import *
 
-startTimeValue=0
-endTimeValue=1
-fpsValue=1
+
 # fileList=[]
 
 class Example(QMainWindow):
@@ -47,6 +45,9 @@ class Example(QMainWindow):
         
         
     def initUI(self):
+        self.startTimeValue=0
+        self.endTimeValue=1
+        self.fpsValue=1
 
         # 视频预览
         self.player = QMediaPlayer(self)
@@ -146,6 +147,7 @@ class Example(QMainWindow):
 
         self.label = QLabel(self)
         self.label.setGeometry(800, 20, 400, 500)
+        self.label.setScaledContents(True)
        
 
         # #这种静态的方法设置一个用于显示工具提示的字体。我们使用10px滑体字体。
@@ -184,25 +186,26 @@ class Example(QMainWindow):
 
     def transformToGif(self):
         print('transformToGif--filepath='+fileList[0].path())
-        cache = mpe.VideoFileClip(fileList[0].path()).subclip(startTimeValue,endTimeValue)
+        cache = mpe.VideoFileClip(fileList[0].path()).subclip(self.startTimeValue,self.endTimeValue)
         resultGifFilePath='./gif/xxx.gif'
-        cache.write_gif(resultGifFilePath,fps=fpsValue)
+        cache.write_gif(resultGifFilePath,fps=float(self.fpsValue))
         self.gif = QMovie(resultGifFilePath)
+        
         self.label.setMovie(self.gif)
         self.gif.start()
 
         
     def onChangedOfFPS(self, text):
-        fpsValue=text
-        print('fps='+fpsValue)
+        self.fpsValue=text
+        print('fps='+self.fpsValue)
         
     def onChangedOfStartTime(self, text):
-        startTimeValue=text
-        print('起点 start='+startTimeValue)
+        self.startTimeValue=text
+        print('起点 start='+self.startTimeValue)
 
     def onChangedOfEndTime(self, text):
-        endTimeValue=text
-        print('end='+ endTimeValue)
+        self.endTimeValue=text
+        print('end='+ self.endTimeValue)
 
     def timerEvent(self, e):
  
