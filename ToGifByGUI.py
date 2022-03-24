@@ -3,7 +3,7 @@
 
 # pip install PyQt5-tools
 
-import sys
+import sys,os
 from PyQt5.QtWidgets import (QWidget
 , QProgressBar
 , QSlider
@@ -46,15 +46,15 @@ class Example(QMainWindow):
         
     def initUI(self):
         self.startTimeValue=0
-        self.endTimeValue=1
+        self.endTimeValue=0
         self.fpsValue=1
-
         # 视频预览
         self.player = QMediaPlayer(self)
         self.vw=  QVideoWidget(self)                       # 定义视频显示的widget
         self.vw.setGeometry(20,20,600,600)
         self.vw.show()
         self.player.setVideoOutput(self.vw)                 # 视频播放输出的widget，就是上面定义的
+        self.player.positionChanged.connect(self.changeSlide)
 
         # 播放按钮
         self.btn = QPushButton('play', self)
@@ -68,6 +68,9 @@ class Example(QMainWindow):
         self.btn = QPushButton('stop', self)
         self.btn.move(220, 620)
         self.btn.clicked.connect(self.player.stop)
+        # 播放时长
+        self.videoPlayDurationLabel = QLabel(self)
+        self.videoPlayDurationLabel.setGeometry(320, 620, 100, 40)
 
         # 开始转换准备
         # 分辨率
@@ -82,14 +85,16 @@ class Example(QMainWindow):
         startTimeValueLE = QLineEdit(self)
         startTimeValueLE.move(680, 40)
         startTimeValueLE.textChanged[str].connect(self.onChangedOfStartTime)
+        startTimeValueLE.setText(str(self.startTimeValue))
 
         # 结束时间
         self.startLabel = QLabel(self)
         self.startLabel.setGeometry(640, 80, 50, 40)
         self.startLabel.setText('end:')
-        endTimeValueLE = QLineEdit(self)
-        endTimeValueLE.move(680, 80)
-        endTimeValueLE.textChanged[str].connect(self.onChangedOfEndTime)
+        self.endTimeValueLE = QLineEdit(self)
+        self.endTimeValueLE.move(680, 80)
+        self.endTimeValueLE.textChanged[str].connect(self.onChangedOfEndTime)
+        self.endTimeValueLE.setText(str(self.endTimeValue))
         
         # endTimeValueLE = QLineEdit(self)
         # endTimeValueLE.move(680, 60)
@@ -102,11 +107,17 @@ class Example(QMainWindow):
         fpsValueLE = QLineEdit(self)
         fpsValueLE.move(680, 120)
         fpsValueLE.textChanged[str].connect(self.onChangedOfFPS)
+        fpsValueLE.setText(str(self.fpsValue))
 
         # 转换
         self.btn = QPushButton('转换gif', self)
         self.btn.move(640, 160)
         self.btn.clicked.connect(self.transformToGif)
+
+        self.gifSizeLable=QLabel(self)
+        self.gifSizeLable.move(640,190)
+        self.gifSizeLable.setText('0KB')
+
 
         # 导出
 
@@ -183,6 +194,14 @@ class Example(QMainWindow):
         self.setGeometry(50, 50, 1200, 800)
         self.setWindowTitle('视频转Gif动图')    
         self.show()
+    def changeSlide(self, position):
+        self.vidoeLength = self.player.duration() + 0.1
+        print(self.vidoeLength)
+
+        # self.sld_video.setValue(round((position / self.vidoeLength) * 100))
+        self.videoPlayDurationLabel.setText(str(round((position / self.vidoeLength) * 100, 2)) + '%')
+        if((self.endTimeValue)==0):
+            self.endTimeValueLE.setText(str(int(self.player.duration()/1000)))
 
     def transformToGif(self):
         print('transformToGif--filepath='+fileList[0].path())
@@ -194,6 +213,9 @@ class Example(QMainWindow):
         self.label.setMovie(self.gif)
         self.gif.start()
 
+        doubleSize=os.path.getsize(resultGifFilePath)/1000
+        self.gifSizeLable.setText(str(int(doubleSize))+'KB')
+
         
     def onChangedOfFPS(self, text):
         self.fpsValue=text
@@ -204,8 +226,11 @@ class Example(QMainWindow):
         print('起点 start='+self.startTimeValue)
 
     def onChangedOfEndTime(self, text):
-        self.endTimeValue=text
-        print('end='+ self.endTimeValue)
+        if(''==text):
+            self.endTimeValue=-1
+        else :
+            self.endTimeValue=int(text)
+        print('end='+ str(self.endTimeValue))
 
     def timerEvent(self, e):
  
