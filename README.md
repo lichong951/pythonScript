@@ -13,9 +13,16 @@ import moviepy.editor as mpe
 cache = mpe.VideoFileClip("").subclip(0,15)
 cache.write_gif("xxx.gif",fps=2)
 ```
+
 如果需要运行界面的需要如下库支持：
 pip install pyqt5
 
 pip install PyQt5-tools
 
+pyqt5 官网访问地址：![http://code.py40.com/pyqt5/](http://code.py40.com/pyqt5/)
+
+pip install moviepy
+
 视频转换为gif动图
+
+

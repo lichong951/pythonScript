@@ -191,7 +191,7 @@ class Example(QMainWindow):
         
         # self.setLayout(vbox)     
         
-        self.setGeometry(50, 50, 1200, 800)
+        self.setGeometry(0, 0, 1300, 900)
         self.setWindowTitle('视频转Gif动图')    
         self.show()
     def changeSlide(self, position):
@@ -206,7 +206,8 @@ class Example(QMainWindow):
     def transformToGif(self):
         print('transformToGif--filepath='+fileList[0].path())
         cache = mpe.VideoFileClip(fileList[0].path()).subclip(self.startTimeValue,self.endTimeValue)
-        resultGifFilePath='./gif/xxx.gif'
+        resultGifFilePath='./gif/xxx.gif'# TODO 使用日期时间作为目标名称
+        # TODO 转换进度条对话框 展示 
         cache.write_gif(resultGifFilePath,fps=float(self.fpsValue))
         self.gif = QMovie(resultGifFilePath)
         
@@ -261,6 +262,10 @@ class Example(QMainWindow):
     #     else:
     #         self.label.setPixmap(QPixmap('max.ico'))
     def showDialog(self):
+        # TODO 视频文件大小
+        # TODO 播放时长
+        # TODO 视频播放总时长显示
+        
         global fileList
         fileList = QFileDialog.getOpenFileUrl()
         print(fileList[0])
