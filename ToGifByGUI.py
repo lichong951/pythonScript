@@ -4,6 +4,7 @@
 # pip install PyQt5-tools
 
 import sys,os
+import time
 from PyQt5.QtWidgets import (QWidget
 , QProgressBar
 , QSlider
@@ -96,10 +97,6 @@ class Example(QMainWindow):
         self.endTimeValueLE.textChanged[str].connect(self.onChangedOfEndTime)
         self.endTimeValueLE.setText(str(self.endTimeValue))
         
-        # endTimeValueLE = QLineEdit(self)
-        # endTimeValueLE.move(680, 60)
-        # endTimeValueLE.textChanged[str].connect(self.onChangedOfEndTime)
-
         # FPS
         self.fpsLabel = QLabel(self)
         self.fpsLabel.setGeometry(640, 120, 50, 40)
@@ -114,33 +111,22 @@ class Example(QMainWindow):
         self.btn.move(640, 160)
         self.btn.clicked.connect(self.transformToGif)
 
+        # gif的文件名称
+        self.gifFileNameLable=QLabel(self)
+        self.gifFileNameLable.setGeometry(640, 190, 200, 60)
+        # self.gifFileNameLable.setText('xxxx.gif')
+        # Gif的文件大小
         self.gifSizeLable=QLabel(self)
-        self.gifSizeLable.move(640,190)
-        self.gifSizeLable.setText('0KB')
+        self.gifSizeLable.move(640,230)
+        # self.gifSizeLable.setText('0KB')
 
 
         # 导出
 
         #预览
 
-
-
-
-                 
-
         # self.pbar = QProgressBar(self)
         # self.pbar.setGeometry(30, 100, 200, 25)
- 
-        # self.btn = QPushButton('Start', self)
-        # self.btn.move(40, 80)
-        # self.btn.clicked.connect(self.doAction)
- 
-        # self.timer = QBasicTimer()
-        # self.step = 0
-
-        # self.textEdit = QTextEdit()
-        # self.setCentralWidget(self.textEdit)
-        # self.statusBar()
  
         openFile = QAction(QIcon('open.png'), 'Open', self)
         openFile.setShortcut('Ctrl+O')
@@ -151,46 +137,10 @@ class Example(QMainWindow):
         fileMenu = menubar.addMenu('&File')
         fileMenu.addAction(openFile) 
 
-        # sld = QSlider(Qt.Horizontal, self)
-        # sld.setFocusPolicy(Qt.NoFocus)
-        # sld.setGeometry(30, 40, 100, 30)
-        # sld.valueChanged[int].connect(self.changeValue)
-
         self.label = QLabel(self)
         self.label.setGeometry(800, 20, 400, 500)
         self.label.setScaledContents(True)
        
-
-        # #这种静态的方法设置一个用于显示工具提示的字体。我们使用10px滑体字体。
-        # QToolTip.setFont(QFont('SansSerif', 10))
-        
-        # #创建一个提示，我们称之为settooltip()方法。我们可以使用丰富的文本格式
-        # self.setToolTip('This is a <b>QWidget</b> widget')
-        
-        # #创建一个PushButton并为他设置一个tooltip
-        # btn = QPushButton('Button', self)
-        # btn.setToolTip('This is a <b>QPushButton</b> widget')
-        
-        # #btn.sizeHint()显示默认尺寸
-        # btn.resize(btn.sizeHint())
-        
-        # #移动窗口的位置
-        # btn.move(50, 50)  
-
-        # okButton = QPushButton("OK")
-        # cancelButton = QPushButton("Cancel")
- 
-        # hbox = QHBoxLayout()
-        # hbox.addStretch(1)
-        # hbox.addWidget(okButton)
-        # hbox.addWidget(cancelButton)
- 
-        # vbox = QVBoxLayout()
-        # vbox.addStretch(1)
-        # vbox.addLayout(hbox)
-        
-        # self.setLayout(vbox)     
-        
         self.setGeometry(0, 0, 1300, 900)
         self.setWindowTitle('视频转Gif动图')    
         self.show()
@@ -206,7 +156,8 @@ class Example(QMainWindow):
     def transformToGif(self):
         print('transformToGif--filepath='+fileList[0].path())
         cache = mpe.VideoFileClip(fileList[0].path()).subclip(self.startTimeValue,self.endTimeValue)
-        resultGifFilePath='./gif/xxx.gif'# TODO 使用日期时间作为目标名称
+        date=time.strftime('%Y-%m-%d_%H-%M-%S')
+        resultGifFilePath='./gif/'+date+'.gif'# 使用日期时间作为gif文件名称
         # TODO 转换进度条对话框 展示 
         cache.write_gif(resultGifFilePath,fps=float(self.fpsValue))
         self.gif = QMovie(resultGifFilePath)
@@ -214,6 +165,7 @@ class Example(QMainWindow):
         self.label.setMovie(self.gif)
         self.gif.start()
 
+        self.gifFileNameLable.setText(date+'.gif')
         doubleSize=os.path.getsize(resultGifFilePath)/1000
         self.gifSizeLable.setText(str(int(doubleSize))+'KB')
 
